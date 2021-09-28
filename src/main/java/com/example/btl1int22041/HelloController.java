@@ -26,7 +26,7 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        taMeaning.setText("xin chao");
+        taMeaning.setText("xin chao ban");
         tfInput.setText("nhap tu");
         btSearch.setOnMouseClicked(event -> {
             count++;
