@@ -47,7 +47,7 @@ public class Contronler extends Dictionary implements Initializable{
     }
     public void inputsearch(KeyEvent event)
     {
-        String se = searchField.getText().toString();
+        String se = searchField.getText();
         List<String> list = DictionaryManagement.DictionarySearch(se);
         Collections.sort(list);
         ObservableList<String> input = FXCollections.observableArrayList(list);

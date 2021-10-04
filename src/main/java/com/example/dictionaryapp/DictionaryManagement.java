@@ -13,9 +13,8 @@ public class DictionaryManagement extends Dictionary{
 
         World newWord = new World(word_target, word_explain);
         array.add(newWord);
-        for (int i = 0; i< array.size(); i++)
-        {
-            add_up.add(array.get(i).getWorld_target());
+        for (World world : array) {
+            add_up.add(world.getWorld_target());
 
         }
         return  add_up;
@@ -26,7 +25,7 @@ public class DictionaryManagement extends Dictionary{
 
         for (int i=0; i< array.size(); i++)
         {
-            if (array.get(i).getWorld_target().toLowerCase().equals(re.toLowerCase()))
+            if (array.get(i).getWorld_target().equalsIgnoreCase(re))
             {
                 array.remove(i);
             }
@@ -39,8 +38,7 @@ public class DictionaryManagement extends Dictionary{
     }
 
     public static void InsertFromFile() throws FileNotFoundException {  // doc file
-        Scanner sc =  null;
-        sc = new Scanner(new File("dataos.txt"));
+        Scanner sc = new Scanner(new File("dataos.txt"));
         try {
             while(sc.hasNextLine())
             {
@@ -48,9 +46,8 @@ public class DictionaryManagement extends Dictionary{
                 String word_mean = sc.nextLine();
                 array.add(new World(word, word_mean));
             }
-            for (int i=0; i< array.size(); i++)
-            {
-                listWordTarget.add(array.get(i).getWorld_target());
+            for (World world : array) {
+                listWordTarget.add(world.getWorld_target());
             }
             sc.close();
         } catch(Exception e) {
@@ -62,12 +59,10 @@ public class DictionaryManagement extends Dictionary{
     public static String dictionaryLookup(String wordToLookUp)
     {
 
-        for (int i=0; i< array.size(); i++)
-        {
-           if (array.get(i).getWorld_target().toLowerCase().equals(wordToLookUp.toLowerCase()))
-           {
-               return array.get(i).getWorld_explain();
-           }
+        for (World world : array) {
+            if (world.getWorld_target().equalsIgnoreCase(wordToLookUp)) {
+                return world.getWorld_explain();
+            }
         }
         return "";
     }
@@ -98,7 +93,7 @@ public class DictionaryManagement extends Dictionary{
     public static String modified(String change_target,String change_explain) throws IOException {
         for(int i=0;i<array.size();i++)
         {
-            if(array.get(i).getWorld_target().toLowerCase().equals(change_target.toLowerCase()))
+            if(array.get(i).getWorld_target().equalsIgnoreCase(change_target))
             {
                 Dictionary.modify(i,new World(change_target, change_explain));
             }
@@ -110,15 +105,9 @@ public class DictionaryManagement extends Dictionary{
     public static List<String> DictionarySearch(String wordSearch)
     {
 
-        for (int i =0; i< array.size(); i++)
-        {
-            if (array.get(i).getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase()))
-            {
-                add_up.add(array.get(i).getWorld_target());
-            }
-            else
-            {
-                continue;
+        for (World world : array) {
+            if (world.getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase())) {
+                add_up.add(world.getWorld_target());
             }
         }
         Collections.sort(add_up);

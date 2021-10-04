@@ -8,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
+import java.util.Objects;
+//https://raw.githubusercontent.com/yenthanh132/avdict-database-sqlite-converter/master/anhviet109K.txt
+//https://raw.githubusercontent.com/yenthanh132/avdict-database-sqlite-converter/master/vietanh.txt
 public class Main extends Application {
 
     public static void main(String[] args) {
@@ -17,7 +19,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Dictionaryfx.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Dictionaryfx.fxml")));
         primaryStage.setTitle("App Dictionary");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
