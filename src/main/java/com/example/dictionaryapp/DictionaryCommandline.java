@@ -1,37 +1,27 @@
 package com.example.dictionaryapp;
 
-import static com.example.dictionaryapp.DictionaryManagement.InsertFromFile;
-import static com.example.dictionaryapp.DictionaryManagement.dictionaryLookup;
-
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.FileNotFoundException;
 
 public class DictionaryCommandline {
-    public static void showAllWords() {
-
-    }
-
-    public static void dictionaryBasic() {
-        insertFromCommandline();
-        showAllWords();
-    }
-
-    public static void dictionaryAdvanced() {
-        InsertFromFile();
-        showAllWords();
-        dictionaryLookup();
-    }
-
-    public void dictionarySearcher() {
-        Scanner scanner = new Scanner(System.in);
-        String word_target = scanner.nextLine();
-        ArrayList<Word> words = Dictionary.searcher(word_target);
-
-        for (Word word : words) {
-            System.out.print(word.getWord_target());
-            System.out.println(" " + word.getWord_explain());
+    public static void showAllWords(DictionaryManagement a) {
+        System.out.printf("%-22s%-22s%-22s\n","No","Word","Explain");
+        int i = 1;
+        for(World word : a.array){
+            System.out.printf("%-22d%-22s%-22s\n",i,word.getWorld_target(),word.getWorld_explain());
+            i++;
         }
     }
+
+    public static void main(String[] args) {
+        DictionaryManagement a = new DictionaryManagement();
+        try {
+            a.InsertFromFile();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        showAllWords(a);
+    }
+
 }
 
 
