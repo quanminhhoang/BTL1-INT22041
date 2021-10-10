@@ -102,17 +102,7 @@ public class DictionaryManagement extends Dictionary{
         return change_explain;
     }
 
-    public static List<String> DictionarySearch(String wordSearch)
-    {
 
-        for (World world : array) {
-            if (world.getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase())) {
-                add_up.add(world.getWorld_target());
-            }
-        }
-        Collections.sort(add_up);
-        return add_up;
-    }
     public static void insertfromcmd() {
         Scanner x = new Scanner(System.in);
         String e = x.next();
