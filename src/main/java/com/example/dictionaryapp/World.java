@@ -1,6 +1,6 @@
 package com.example.dictionaryapp;
 
-public class World{
+public class World {
     private String world_target;
     private String world_explain;
 

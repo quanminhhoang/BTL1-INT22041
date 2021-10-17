@@ -1,26 +1,36 @@
 package com.example.dictionaryapp;
 
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import java.io.FileNotFoundException;
+import java.util.Objects;
+import java.util.Scanner;
 
-import java.io.IOException;
-
-public class Main extends Application {
+public class Main {
 
     public static void main(String[] args) {
-        launch(args);
-    }
+        try {
+            DictionaryManagement.InsertFromFile();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Scanner scanner = new Scanner(System.in);
+        String Code;
+        while (true) {
+            System.out.println("Nhập Basic() để chọn DictionaryBacic()");
+            System.out.println("Nhập Advanced() để chọn DictionaryAdvanced()");
+            System.out.println("Nhập End() để kết thúc chương trình");
+            Code = scanner.next();
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Dictionaryfx.fxml"));
-        primaryStage.setTitle("App Dictionary");
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            if (Objects.equals(Code, "Basic()")) {
+                System.out.println("DictionaryBasic Mode");
+                DictionaryCommandline.Basic();
+            } else if (Objects.equals(Code, "Advanced()")) {
+                System.out.println("DictionaryAdvanced Mode");
+                DictionaryCommandline.Advanced();
+            } else if (Objects.equals(Code, "End()")) {
+                System.out.println("Kết thúc chương trình.");
+                scanner.close();
+                break;
+            }
+        }
     }
 }
