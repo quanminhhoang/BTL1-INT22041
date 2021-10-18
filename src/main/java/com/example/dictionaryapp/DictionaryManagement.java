@@ -1,14 +1,28 @@
 package com.example.dictionaryapp;
 
+import javax.speech.Central;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
 import java.io.*;
 import java.util.*;
+import java.util.Locale;
+import javax.speech.Central;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
 
 public class DictionaryManagement extends Dictionary{
 
     public static List<String> add_up = new ArrayList<>(); // list luu cac tu tieng anh truoc va sau khi them
     public static List<String> remove_out = new ArrayList<>(); // list luu cac tu tieng anh truoc va sau khi xoa
 
-    public static List<String> addmoreword(String word_target, String word_explain) // them tu va tra ve danh sach tu moi
+    public static List<String> Addmoreword(String word_target, String word_explain) // them tu va tra ve danh sach tu moi
     {
 
         World newWord = new World(word_target, word_explain);
@@ -20,7 +34,7 @@ public class DictionaryManagement extends Dictionary{
         return  add_up;
     }
 
-    public static List<String> removeWordFromDictionary(String re)
+    public static List<String> RemoveWordFromDictionary(String re)
     {
 
         for (int i=0; i< array.size(); i++)
@@ -56,7 +70,7 @@ public class DictionaryManagement extends Dictionary{
     }
 
     // ham tra cuu tu va tra ve nghia
-    public static String dictionaryLookup(String wordToLookUp)
+    public static String DictionaryLookup(String wordToLookUp)
     {
 
         for (World world : array) {
@@ -90,7 +104,7 @@ public class DictionaryManagement extends Dictionary{
     }
 
     //hàm chỉnh sửa nghĩa từ//
-    public static String modified(String change_target,String change_explain) throws IOException {
+    public static String Modified(String change_target,String change_explain) throws IOException {
         for(int i=0;i<array.size();i++)
         {
             if(array.get(i).getWorld_target().equalsIgnoreCase(change_target))
@@ -114,5 +128,66 @@ public class DictionaryManagement extends Dictionary{
         return add_up;
     }
 
+    public static void TTS(String Speech)
+    {
+
+        try {
+            // Set property as Kevin Dictionary
+            System.setProperty(
+                    "freetts.voices",
+                    "com.sun.speech.freetts.en.us"
+                            + ".cmu_us_kal.KevinVoiceDirectory");
+
+            // Register Engine
+            Central.registerEngineCentral(
+                    "com.sun.speech.freetts"
+                            + ".jsapi.FreeTTSEngineCentral");
+
+            // Create a Synthesizer
+            Synthesizer synthesizer
+                    = Central.createSynthesizer(
+                    new SynthesizerModeDesc(Locale.US));
+
+            // Allocate synthesizer
+            synthesizer.allocate();
+
+            // Resume Synthesizer
+            synthesizer.resume();
+
+            // Speaks the given text
+            // until the queue is empty.
+            synthesizer.speakPlainText(
+                    Speech, null);
+            synthesizer.waitEngineState(
+                    Synthesizer.QUEUE_EMPTY);
+
+            // Deallocate the Synthesizer.
+            synthesizer.deallocate();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // 5000 tu 1 ngay 1 link
+    public static String TranslateEnVi(String text) throws IOException {
+        String urlStr = "https://script.google.com/macros/s/AKfycbyXC0J_8nBkbpnAT96Oq_ptutFJHlHvZS_HR5Hy4qSsQvHr5Cw/exec" +
+                "?q=" + URLEncoder.encode(text, "UTF-8") +
+                "&target=vi&source=en";
+        URL url = new URL(urlStr);
+        StringBuilder response = new StringBuilder();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        return response.toString();
+    }
+
+    public static void main(String[] args) {
+    }
 
 }
