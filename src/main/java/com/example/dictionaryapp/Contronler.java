@@ -142,5 +142,5 @@ public class Contronler extends Dictionary implements Initializable {
         ObservableList<String> data = FXCollections.observableArrayList(listWordTarget);
         listView.setItems(data);
     }
-
+    
 }
