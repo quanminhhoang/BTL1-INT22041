@@ -3,9 +3,9 @@ package com.example.dictionaryapp;
 import javax.speech.Central;
 import javax.speech.synthesis.*;
 import java.io.*;
+import java.lang.reflect.WildcardType;
 import java.util.*;
 import java.util.Locale;
-import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
 import java.io.BufferedReader;
@@ -33,22 +33,19 @@ public class DictionaryManagement extends Dictionary{
         return  add_up;
     }
 
-    public static List<String> RemoveWordFromDictionary(String re)
+    public static List<String> RemoveWordFromDictionary(String word)
     {
-
-        for (int i=0; i< array.size(); i++)
-        {
-            if (array.get(i).getWorld_target().equalsIgnoreCase(re))
-            {
-                array.remove(i);
-            }
-            else
-            {
+        int i;
+        for(i = 0; i < array.size() ; i++) {
+            if(array.get(i).getWorld_target().equals(word)) {
+                array.remove(array.get(i));
+            } else {
                 remove_out.add(array.get(i).getWorld_target());
             }
         }
         return remove_out;
     }
+
 
     public static void InsertFromFile() throws FileNotFoundException {  // doc file
         Scanner sc = new Scanner(new File("dataos.txt"));
@@ -115,6 +112,15 @@ public class DictionaryManagement extends Dictionary{
         return change_explain;
     }
 
+    public static Boolean WordExist(String Word) {
+        for(World word : array) {
+            if(Objects.equals(word.getWorld_target(), Word)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static List<String> DictionarySearch(String wordSearch)
     {
 
@@ -169,9 +175,6 @@ public class DictionaryManagement extends Dictionary{
         }
         in.close();
         return response.toString();
-    }
-
-    public static void main(String[] args) {
     }
 
 }

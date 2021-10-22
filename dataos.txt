@@ -1,7 +1,7 @@
 a
 một
 add
-thêm vào
+thêm vao
 array
 mảng
 beautiful

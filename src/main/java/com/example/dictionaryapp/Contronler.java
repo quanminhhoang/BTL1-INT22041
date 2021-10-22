@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Contronler extends Dictionary implements Initializable {
@@ -131,12 +132,12 @@ public class Contronler extends Dictionary implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
-            alert.setHeaderText("do you want to change the word ");
-            alert.show();
-            String moding = textArea.getText();
-            String poin = searchField.getText();
-            String st = DictionaryManagement.Modified(poin, moding);
-            textArea.setText(st);
+            alert.setHeaderText("Do you want to change the word ");
+            alert.showAndWait();
+            String Explain = textArea.getText();
+            String Word = searchField.getText();
+            String Out = DictionaryManagement.Modified(Word, Explain);
+            textArea.setText(Out);
             textArea.setEditable(false);
         }
     }
@@ -158,15 +159,15 @@ public class Contronler extends Dictionary implements Initializable {
         if (add_Target.getText() == null || add_Explain.getText() == null || add_Explain.getText().isEmpty() || add_Target.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("You have not entered the word ");
-            alert.setContentText("Please add words correctly.");
+            alert.setHeaderText("You have not entered the word");
+            alert.setContentText("Please add word");
             alert.showAndWait();
         } else {
             String target = add_Target.getText();
             String explain = add_Explain.getText();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Add Word");
-            alert.setHeaderText("Added New Word  " + target + " : " + explain + ".");
+            alert.setHeaderText("Added New Word  " + target + " : " + explain );
             alert.showAndWait();
             List<String> s = DictionaryManagement.Addmoreword(target, explain);
             ObservableList<String> input = FXCollections.observableArrayList(s);
@@ -182,16 +183,27 @@ public class Contronler extends Dictionary implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("You have not entered the word ");
-            alert.setContentText("Please add words correctly.");
+            alert.setContentText("Please add word");
             alert.showAndWait();
-        } else if (DictionaryManagement.DictionaryLookup(SearchToDelete.getText()) == "//404//") {
+        } else if (DictionaryManagement.WordExist(SearchToDelete.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Word dont exist");
-            alert.setContentText("Please try again.");
+            alert.setHeaderText("Word don't exist");
+            alert.setContentText("Please try again");
             alert.showAndWait();
         } else {
             //Chua viet xong ham Dictionarymanegement.Remove..
+            String Word = SearchToDelete.getText();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Delete");
+            alert.setHeaderText("Delete Word : " + Word);
+            alert.showAndWait();
+            List<String> s = DictionaryManagement.RemoveWordFromDictionary(Word);
+            ObservableList<String> input = FXCollections.observableArrayList(s);
+            listView.setItems(input);
+            s.clear();
+            SearchToDelete.clear();
+
         }
 
     }
