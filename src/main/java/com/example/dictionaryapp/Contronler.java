@@ -1,15 +1,24 @@
 package com.example.dictionaryapp;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,9 +29,9 @@ import java.util.ResourceBundle;
 
 public class Contronler extends Dictionary implements Initializable {
     @FXML
-    private MenuBar menuBar;
-    @FXML
     private TextArea textArea;
+    @FXML
+    private TextField TextToP;
     @FXML
     private TextField add_Target;
     @FXML
@@ -32,11 +41,37 @@ public class Contronler extends Dictionary implements Initializable {
     @FXML
     private TextField searchField;
     @FXML
-    private Button erase;
+    private TextField SearchToDelete;
+    @FXML
+    private TextField ToTrans;
+    @FXML
+    private TextArea Trans;
     @FXML
     private Button TLAPI;
     @FXML
     private Button TTS;
+    @FXML
+    private Button AddWord;
+    @FXML
+    private Button Home;
+    @FXML
+    private Pane PaneAddWord;
+    @FXML
+    private Pane PaneHome;
+    @FXML
+    private Pane PaneDelete;
+    @FXML
+    private Pane PaneSpeech;
+    @FXML
+    private Pane PaneTrans;
+    @FXML
+    private javafx.scene.control.Button closeButton;
+
+    @FXML
+    private void closeButtonAction() {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
 
     //ham su dung khi danh mot tu//an enter se hien thang nghia tren textArea
     public void wordlookup(ActionEvent event) {
@@ -45,13 +80,30 @@ public class Contronler extends Dictionary implements Initializable {
     }
 
     public void WordToTLAPI() throws IOException {
-        String WordLook = searchField.getText();
-        textArea.setText(DictionaryManagement.TranslateEnVi(WordLook));
+        if (ToTrans.getText() == null || ToTrans.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing in TextField");
+            alert.setContentText("Please enter words.");
+            alert.showAndWait();
+        } else {
+            String WordLook = ToTrans.getText();
+            Trans.setText(DictionaryManagement.TranslateEnVi(WordLook));
+        }
     }
 
     public void TTS() {
-        String wordLook = searchField.getText();
-        DictionaryManagement.TTS(wordLook);
+        if (TextToP.getText().isEmpty() || TextToP.getText() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing in TextField");
+            alert.setContentText("Please enter words.");
+            alert.showAndWait();
+        } else {
+            String wordLook = TextToP.getText();
+            DictionaryManagement.TTS(wordLook);
+            TextToP.clear();
+        }
     }
 
     public void inputsearch(KeyEvent event) {
@@ -102,36 +154,91 @@ public class Contronler extends Dictionary implements Initializable {
         System.exit(0);
     }
 
-    // them tu moi, su dung Edit
-    public void insert_newWord(KeyEvent event) throws IOException {
-        if (event.getCode() == KeyCode.SHIFT) {
-            String terget = add_Target.getText();
+    public void AddWord() {
+        if (add_Target.getText() == null || add_Explain.getText() == null || add_Explain.getText().isEmpty() || add_Target.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("You have not entered the word ");
+            alert.setContentText("Please add words correctly.");
+            alert.showAndWait();
+        } else {
+            String target = add_Target.getText();
             String explain = add_Explain.getText();
-            if (terget.length() > 0 && explain.length() > 0) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Add new Words");
-                alert.setHeaderText("You definitely want more ");
-                alert.setContentText("You are adding this word " + '"' + terget + '"' + " and its meaning " + '"' + explain + '"');
-                alert.showAndWait();
-                List<String> s = DictionaryManagement.Addmoreword(terget, explain);
-                ObservableList<String> input = FXCollections.observableArrayList(s);
-                listView.setItems(input);
-                DictionaryManagement.EditFile();
-                s.clear();
-                add_Target.clear();
-                add_Explain.clear();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("You have not entered the word ");
-                alert.setContentText("Please add words correctly.");
-                alert.show();
-            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Add Word");
+            alert.setHeaderText("Added New Word  " + target + " : " + explain + ".");
+            alert.showAndWait();
+            List<String> s = DictionaryManagement.Addmoreword(target, explain);
+            ObservableList<String> input = FXCollections.observableArrayList(s);
+            listView.setItems(input);
+            s.clear();
+            add_Target.clear();
+            add_Explain.clear();
         }
+    }
+
+    public void DeleteWord() {
+        if (SearchToDelete.getText() == null || SearchToDelete.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("You have not entered the word ");
+            alert.setContentText("Please add words correctly.");
+            alert.showAndWait();
+        } else if (DictionaryManagement.DictionaryLookup(SearchToDelete.getText()) == "//404//") {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Word dont exist");
+            alert.setContentText("Please try again.");
+            alert.showAndWait();
+        } else {
+            //Chua viet xong ham Dictionarymanegement.Remove..
+        }
+
+    }
+
+    public void SetPaneAddWordVisible() {
+        PaneTrans.setVisible(false);
+        PaneSpeech.setVisible(false);
+        PaneHome.setVisible(false);
+        PaneDelete.setVisible(false);
+        PaneAddWord.setVisible(true);
+    }
+
+    public void SetPaneHomeVisible() {
+        PaneTrans.setVisible(false);
+        PaneSpeech.setVisible(false);
+        PaneDelete.setVisible(false);
+        PaneAddWord.setVisible(false);
+        PaneHome.setVisible(true);
+    }
+
+    public void SetPaneDeleteVisible() {
+        PaneTrans.setVisible(false);
+        PaneSpeech.setVisible(false);
+        PaneDelete.setVisible(true);
+        PaneAddWord.setVisible(false);
+        PaneHome.setVisible(false);
+    }
+
+    public void SetPaneTransVisible() {
+        PaneTrans.setVisible(true);
+        PaneSpeech.setVisible(false);
+        PaneDelete.setVisible(false);
+        PaneAddWord.setVisible(false);
+        PaneHome.setVisible(false);
+    }
+
+    public void SetPaneSpeechVisible() {
+        PaneTrans.setVisible(false);
+        PaneSpeech.setVisible(true);
+        PaneDelete.setVisible(false);
+        PaneAddWord.setVisible(false);
+        PaneHome.setVisible(false);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         try {
             DictionaryManagement.InsertFromFile();
         } catch (FileNotFoundException e) {
@@ -142,5 +249,5 @@ public class Contronler extends Dictionary implements Initializable {
         ObservableList<String> data = FXCollections.observableArrayList(listWordTarget);
         listView.setItems(data);
     }
-    
+
 }
