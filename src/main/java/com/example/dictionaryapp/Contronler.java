@@ -1,9 +1,6 @@
 package com.example.dictionaryapp;
 
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,13 +10,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -45,6 +39,7 @@ public class Contronler extends Dictionary implements Initializable{
             String wordLook = searchField.getText();
             textArea.setText(DictionaryManagement.dictionaryLookup(wordLook));
     }
+    //
     public void inputsearch(KeyEvent event)
     {
         String se = searchField.getText().toString();
