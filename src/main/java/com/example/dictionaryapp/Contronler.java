@@ -39,7 +39,7 @@ public class Contronler extends Dictionary implements Initializable{
             String wordLook = searchField.getText();
             textArea.setText(DictionaryManagement.dictionaryLookup(wordLook));
     }
-    //
+
     public void inputsearch(KeyEvent event)
     {
         String se = searchField.getText().toString();

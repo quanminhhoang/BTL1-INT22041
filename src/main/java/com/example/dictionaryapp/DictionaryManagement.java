@@ -106,7 +106,7 @@ public class DictionaryManagement extends Dictionary{
         EditFile();
         return change_explain;
     }
-//
+
     public static List<String> DictionarySearch(String wordSearch)
     {
 
