@@ -1,11 +1,23 @@
 package com.example.dictionaryapp;
 
 import javax.speech.Central;
-import javax.speech.synthesis.Synthesizer;
-import javax.speech.synthesis.SynthesizerModeDesc;
+import javax.speech.synthesis.*;
 import java.io.*;
+
 import java.net.*;
 import java.util.*;
+
+import java.lang.reflect.WildcardType;
+import java.util.*;
+import java.util.Locale;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 
 public class DictionaryManagement extends Dictionary{
@@ -25,22 +37,19 @@ public class DictionaryManagement extends Dictionary{
         return  add_up;
     }
 
-    public static List<String> RemoveWordFromDictionary(String re)
+    public static List<String> RemoveWordFromDictionary(String word)
     {
-
-        for (int i=0; i< array.size(); i++)
-        {
-            if (array.get(i).getWorld_target().equalsIgnoreCase(re))
-            {
-                array.remove(i);
-            }
-            else
-            {
+        int i;
+        for(i = 0; i < array.size() ; i++) {
+            if(array.get(i).getWorld_target().equals(word)) {
+                array.remove(array.get(i));
+            } else {
                 remove_out.add(array.get(i).getWorld_target());
             }
         }
         return remove_out;
     }
+
 
     public static void InsertFromFile() throws FileNotFoundException {  // doc file
         Scanner sc = new Scanner(new File("dataos.txt"));
@@ -69,7 +78,7 @@ public class DictionaryManagement extends Dictionary{
                 return world.getWorld_explain();
             }
         }
-        return "";
+        return "//404//";
     }
 
     // viet lai file khi sua tu
@@ -107,6 +116,15 @@ public class DictionaryManagement extends Dictionary{
         return change_explain;
     }
 
+    public static Boolean WordExist(String Word) {
+        for(World word : array) {
+            if(Objects.equals(word.getWorld_target(), Word)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static List<String> DictionarySearch(String wordSearch)
     {
 
@@ -121,45 +139,30 @@ public class DictionaryManagement extends Dictionary{
 
     public static void TTS(String Speech)
     {
-
         try {
-            // Set property as Kevin Dictionary
-            System.setProperty(
-                    "freetts.voices",
-                    "com.sun.speech.freetts.en.us"
-                            + ".cmu_us_kal.KevinVoiceDirectory");
+            System.setProperty("FreeTTSSynthEngineCentral", "com.sun.speech.freetts.jsapi.FreeTTSEngineCentral");
+            System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+            Central.registerEngineCentral("com.sun.speech.freetts.jsapi.FreeTTSEngineCentral");
 
-            // Register Engine
-            Central.registerEngineCentral(
-                    "com.sun.speech.freetts"
-                            + ".jsapi.FreeTTSEngineCentral");
+            SynthesizerModeDesc desc = new SynthesizerModeDesc(null, "general", Locale.US, null, null);
 
-            // Create a Synthesizer
-            Synthesizer synthesizer
-                    = Central.createSynthesizer(
-                    new SynthesizerModeDesc(Locale.US));
-
-            // Allocate synthesizer
-            synthesizer.allocate();
-
-            // Resume Synthesizer
-            synthesizer.resume();
-
-            // Speaks the given text
-            // until the queue is empty.
-            synthesizer.speakPlainText(
-                    Speech, null);
-            synthesizer.waitEngineState(
-                    Synthesizer.QUEUE_EMPTY);
-
-            // Deallocate the Synthesizer.
-            synthesizer.deallocate();
-        }
-
-        catch (Exception e) {
-            e.printStackTrace();
+            Synthesizer synth = Central.createSynthesizer(desc);
+            synth.allocate();
+            desc = (SynthesizerModeDesc) synth.getEngineModeDesc();
+            Voice voice = new Voice();
+            // "business", "casual", "robotic", "breathy"
+            voice.setAge(Voice.AGE_TEENAGER);
+            voice.setGender(Voice.GENDER_FEMALE);
+            voice.setStyle("breathy");
+            synth.getSynthesizerProperties().setVoice(voice);
+            synth.resume();
+            synth.speakPlainText(Speech, null);
+            synth.waitEngineState(Synthesizer.QUEUE_EMPTY);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
+
     // 5000 tu 1 ngay 1 link
     public static String TranslateEnVi(String text) throws IOException {
         String urlStr = "https://script.google.com/macros/s/AKfycbyXC0J_8nBkbpnAT96Oq_ptutFJHlHvZS_HR5Hy4qSsQvHr5Cw/exec" +
@@ -178,6 +181,7 @@ public class DictionaryManagement extends Dictionary{
         return response.toString();
     }
 
+
     private static boolean netIsAvailable() {
         try {
             final URL url = new URL("http://www.google.com");
@@ -193,5 +197,6 @@ public class DictionaryManagement extends Dictionary{
     }
     public static void main(String[] args) {
     }
+
 
 }

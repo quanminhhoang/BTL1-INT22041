@@ -1,71 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionaryapp.Contronler">
+<AnchorPane prefHeight="766.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionaryapp.Contronler">
     <children>
-        <MenuBar fx:id="menuBar" layoutX="-12.0" layoutY="2.0">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#close" text="Close">
-                            <accelerator>
-                                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                            </accelerator></MenuItem>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="New Word">
-                            <graphic>
-                                <TextField fx:id="add_Target" />
-                            </graphic></MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Meaning">
-                            <graphic>
-                                <TextField fx:id="add_Explain" onKeyReleased="#insert_newWord" />
-                            </graphic>
-                        </MenuItem>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-        <TextField fx:id="searchField" layoutX="32.0" layoutY="46.0" onKeyReleased="#inputsearch" prefHeight="26.0" prefWidth="226.0" />
-        <ListView fx:id="listView" editable="true" layoutX="33.0" layoutY="95.0" onMouseClicked="#clicked" prefHeight="290.0" prefWidth="257.0" />
-        <Button layoutX="355.0" layoutY="46.0" mnemonicParsing="false" onAction="#wordlookup">
-            <graphic>
-                <ImageView fitHeight="16.0" fitWidth="25.0" layoutX="355.0" layoutY="46" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@dictionary.png" />
-                    </image>
-                </ImageView>
-            </graphic>
-        </Button>
-        <TextArea fx:id="textArea" layoutX="355.0" layoutY="95.0" onKeyPressed="#mode_word" prefHeight="290.0" prefWidth="225.0" />
-        <Button fx:id="erase" layoutX="258.0" layoutY="45.0" mnemonicParsing="false" onAction="#erase_search" prefHeight="28.0" prefWidth="10.0">
-            <graphic>
-                <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="258.0" layoutY="45" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@X.png" />
-                    </image>
-                </ImageView>
-            </graphic>
-        </Button>
-      <Button fx:id="TLAPI" layoutX="427.0" layoutY="46.0" mnemonicParsing="false" onAction="#WordToTLAPI" text="API" />
-      <Button fx:id="TTS" layoutX="503.0" layoutY="47.0" mnemonicParsing="false" onAction="#TTS" text="TTS" />
+      <AnchorPane prefHeight="766.0" prefWidth="280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+              <VBox prefHeight="766.0" prefWidth="284.0" style="-fx-background-color: #6897bb;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <children>
+                      <Pane prefHeight="97.0" prefWidth="292.0" style="-fx-background-color: #293c4a;">
+                          <children>
+                              <Label alignment="CENTER" layoutX="82.0" layoutY="31.0" prefHeight="38.0" prefWidth="109.0" text="hehehe" textFill="WHITE">
+                                  <font>
+                                      <Font size="26.0" />
+                                  </font>
+                              </Label>
+                        <ImageView fitHeight="67.0" fitWidth="64.0" layoutX="14.0" layoutY="15.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@logo.png" />
+                           </image>
+                        </ImageView>
+                          </children>
+                      </Pane>
+                  <Separator prefHeight="3.0" prefWidth="273.0" />
+                      <JFXButton alignment="BASELINE_LEFT" graphicTextGap="12.0" onAction="#SetPaneAddWordVisible" prefHeight="67.0" prefWidth="281.0" style="-fx-background-color: #537895; -fx-background-radius: 10;" text="Add Word" textFill="#0b3636">
+                          <font>
+                              <Font size="20.0" />
+                          </font>
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                      </JFXButton>
+                  <Separator prefWidth="200.0" />
+                      <JFXButton alignment="BASELINE_LEFT" graphicTextGap="12.0" onAction="#SetPaneDeleteVisible" prefHeight="67.0" prefWidth="290.0" style="-fx-background-color: #537895; -fx-background-radius: 10;" text="Delete Word" textFill="#0b3636">
+                          <font>
+                              <Font size="20.0" />
+                          </font>
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@delete.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                      </JFXButton>
+                  <Separator prefWidth="200.0" />
+                      <JFXButton alignment="BASELINE_LEFT" graphicTextGap="12.0" onAction="#SetPaneTransVisible" prefHeight="67.0" prefWidth="280.0" style="-fx-background-color: #537895; -fx-background-radius: 10;" text="Translate API" textFill="#0b3636">
+                          <font>
+                              <Font size="20.0" />
+                          </font>
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@trans.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                      </JFXButton>
+                  <Separator prefWidth="200.0" />
+                      <JFXButton alignment="BASELINE_LEFT" graphicTextGap="12.0" onAction="#SetPaneSpeechVisible" prefHeight="67.0" prefWidth="280.0" style="-fx-background-color: #537895; -fx-background-radius: 10;" text="Speech" textFill="#0b3636">
+                          <font>
+                              <Font size="20.0" />
+                          </font>
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@audio.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                      </JFXButton>
+                  <Separator prefHeight="2.0" prefWidth="277.0" />
+                  </children>
+              </VBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="281.0" prefHeight="67.0" prefWidth="884.0" style="-fx-background-color: #141e25;" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="811.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="43.0" prefWidth="42.0" style="-fx-background-color: #293c4a;" textFill="WHITE" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="811.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="12.0">
+               <graphic>
+                  <ImageView fitHeight="38.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@x.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <JFXButton fx:id="Home" contentDisplay="GRAPHIC_ONLY" layoutX="31.0" layoutY="16.0" onAction="#SetPaneHomeVisible" prefHeight="43.0" prefWidth="50.0" style="-fx-background-color: #293c4a;" text="Home" AnchorPane.bottomAnchor="12.0" AnchorPane.topAnchor="12.0">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@home.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="PaneAddWord" layoutX="282.0" layoutY="66.0" prefHeight="740.0" prefWidth="884.0" style="-fx-background-color: #e0eaf1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="66.0">
+         <children>
+            <TextField fx:id="add_Target" layoutX="331.0" layoutY="223.0" prefHeight="25.0" prefWidth="223.0" />
+            <TextField fx:id="add_Explain" layoutX="327.0" layoutY="304.0" prefHeight="25.0" prefWidth="223.0" />
+            <Text fill="#04060a" layoutX="327.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter New Word" wrappingWidth="202.3515625">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Text fill="#04060a" layoutX="327.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter New Word Meaning" wrappingWidth="314.3515625">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Button fx:id="AddWord" layoutX="409.0" layoutY="360.0" mnemonicParsing="false" onAction="#AddWord" prefHeight="25.0" prefWidth="50.0" text="Add" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="PaneSpeech" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #e0eaf1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="66.0">
+         <children>
+            <Button fx:id="TTS" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#TTS" text="Speech" />
+            <TextField fx:id="TextToP" layoutX="151.0" layoutY="70.0" prefHeight="189.0" prefWidth="588.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="PaneHome" layoutX="242.0" layoutY="67.0" prefHeight="699.0" prefWidth="884.0" style="-fx-background-color: #e0eaf1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="66.0">
+         <children>
+              <TextArea fx:id="textArea" layoutX="463.0" layoutY="120.0" onKeyPressed="#mode_word" prefHeight="561.0" prefWidth="333.0" AnchorPane.bottomAnchor="46.0" AnchorPane.topAnchor="93.0" />
+              <Button fx:id="erase" layoutX="442.0" layoutY="34.0" mnemonicParsing="false" onAction="#erase_search" prefHeight="42.0" prefWidth="44.0" style="-fx-background-color: #e0eaf1;" AnchorPane.bottomAnchor="624.0" AnchorPane.topAnchor="34.0">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@backspace.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+              <Button layoutX="361.0" layoutY="34.0" mnemonicParsing="false" onAction="#wordlookup" prefHeight="28.0" prefWidth="61.0" style="-fx-background-color: #e0eaf1;" AnchorPane.bottomAnchor="624.0" AnchorPane.topAnchor="34.0">
+               <graphic>
+                  <ImageView fitHeight="34.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+              <TextField fx:id="searchField" layoutX="62.0" layoutY="42.0" onKeyReleased="#inputsearch" prefHeight="26.0" prefWidth="280.0" />
+              <ListView fx:id="listView" editable="true" layoutX="62.0" layoutY="93.0" onMouseClicked="#clicked" prefHeight="561.0" prefWidth="280.0" AnchorPane.bottomAnchor="46.0" AnchorPane.topAnchor="93.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="PaneDelete" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #e0eaf1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="66.0">
+         <children>
+            <TextField fx:id="SearchToDelete" layoutX="308.0" layoutY="176.0" prefHeight="25.0" prefWidth="202.0" />
+            <Text layoutX="309.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Delete Word" wrappingWidth="202.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Button layoutX="384.0" layoutY="246.0" mnemonicParsing="false" onAction="#DeleteWord" text="Delete" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="PaneTrans" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #e0eaf1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="66.0">
+         <children>
+            <TextArea fx:id="Trans" layoutX="158.0" layoutY="350.0" prefHeight="200.0" prefWidth="571.0">
+               <font>
+                  <Font size="20.0" />
+               </font></TextArea>
+            <Button fx:id="TLAPI" layoutX="412.0" layoutY="295.0" mnemonicParsing="false" onAction="#WordToTLAPI" text="Translate" />
+            <TextField fx:id="ToTrans" alignment="TOP_LEFT" layoutX="161.0" layoutY="64.0" prefHeight="200.0" prefWidth="563.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
     </children>
 </AnchorPane>

@@ -1,7 +1,7 @@
 a
 một
 add
-thêm vào
+thêm vao
 array
 mảng
 beautiful
@@ -20,3 +20,5 @@ girl
 con gái , nữ giới
 good
 tốt
+quam
+quam
