@@ -1,16 +1,11 @@
 package com.example.dictionaryapp;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -18,7 +13,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,23 +32,29 @@ public class Contronler extends Dictionary implements Initializable {
     @FXML
     private TextField add_Explain;
     @FXML
-    public ListView listView;
-    @FXML
     private TextField searchField;
     @FXML
     private TextField SearchToDelete;
     @FXML
     private TextField ToTrans;
     @FXML
-    private TextArea Trans;
+    private TextField Trans;
     @FXML
     private Button TLAPI;
     @FXML
     private Button TTS;
     @FXML
+    private Button TTS2;
+    @FXML
     private Button AddWord;
     @FXML
     private Button Home;
+    @FXML
+    private Button ChangeMode;
+    @FXML
+    private Button ToDeletePane;
+    @FXML
+    private javafx.scene.control.Button closeButton;
     @FXML
     private Pane PaneAddWord;
     @FXML
@@ -66,7 +66,18 @@ public class Contronler extends Dictionary implements Initializable {
     @FXML
     private Pane PaneTrans;
     @FXML
-    private javafx.scene.control.Button closeButton;
+    private Pane PaneInfo;
+    @FXML
+    public ListView listView;
+    @FXML
+    private ImageView e1;
+    @FXML
+    private ImageView e2;
+    @FXML
+    private ImageView v1;
+    @FXML
+    private ImageView v2;
+
 
     @FXML
     private void closeButtonAction() {
@@ -77,9 +88,13 @@ public class Contronler extends Dictionary implements Initializable {
     //ham su dung khi danh mot tu//an enter se hien thang nghia tren textArea
     public void wordlookup(ActionEvent event) {
         String wordLook = searchField.getText();
-        textArea.setText(DictionaryManagement.DictionaryLookup(wordLook));
+        String text = DictionaryManagement.DictionaryLookup(wordLook);
+        if (Objects.equals(text, "//404//")) {
+            textArea.setText("Not Found");
+        } else {
+            textArea.setText(text);
+        }
     }
-
     public void WordToTLAPI() throws IOException {
         if (ToTrans.getText() == null || ToTrans.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -89,7 +104,38 @@ public class Contronler extends Dictionary implements Initializable {
             alert.showAndWait();
         } else {
             String WordLook = ToTrans.getText();
-            Trans.setText(DictionaryManagement.TranslateEnVi(WordLook));
+            Trans.setText(DictionaryManagement.Translate(WordLook));
+        }
+    }
+
+    boolean Mode = true;
+    public void ChangeMode() {
+        if(Mode) {
+            Mode = false;
+            v1.setVisible(false);
+            e2.setVisible(true);
+            v2.setVisible(true);
+            e1.setVisible(false);
+        } else {
+            Mode = true;
+            v1.setVisible(true);
+            e2.setVisible(false);
+            v2.setVisible(false);
+            e1.setVisible(true);
+        }
+    }
+
+    public void ToDeletePane() {
+        if (searchField.getText() == null || searchField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing in search field to delete");
+            alert.setContentText("Please enter words.");
+            alert.showAndWait();
+        } else {
+            String Word = searchField.getText();
+            SetPaneDeleteVisible();
+            SearchToDelete.setText(Word);
         }
     }
 
@@ -104,6 +150,19 @@ public class Contronler extends Dictionary implements Initializable {
             String wordLook = TextToP.getText();
             DictionaryManagement.TTS(wordLook);
             TextToP.clear();
+        }
+    }
+    public void TTS2() {
+        if (searchField.getText().isEmpty() || searchField.getText() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing in TextField");
+            alert.setContentText("Please enter words.");
+            alert.showAndWait();
+        } else {
+            String wordLook = searchField.getText();
+            DictionaryManagement.TTS(wordLook);
+            searchField.clear();
         }
     }
 
@@ -155,7 +214,7 @@ public class Contronler extends Dictionary implements Initializable {
         System.exit(0);
     }
 
-    public void AddWord() {
+    public void AddWord(){
         if (add_Target.getText() == null || add_Explain.getText() == null || add_Explain.getText().isEmpty() || add_Target.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -169,7 +228,7 @@ public class Contronler extends Dictionary implements Initializable {
             alert.setTitle("Add Word");
             alert.setHeaderText("Added New Word  " + target + " : " + explain );
             alert.showAndWait();
-            List<String> s = DictionaryManagement.Addmoreword(target, explain);
+            List<String> s = DictionaryManagement.AddWord(target, explain);
             ObservableList<String> input = FXCollections.observableArrayList(s);
             listView.setItems(input);
             s.clear();
@@ -214,6 +273,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneHome.setVisible(false);
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(true);
+        PaneInfo.setVisible(false);
     }
 
     public void SetPaneHomeVisible() {
@@ -222,6 +282,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(true);
+        PaneInfo.setVisible(false);
     }
 
     public void SetPaneDeleteVisible() {
@@ -230,6 +291,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(true);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(false);
+        PaneInfo.setVisible(false);
     }
 
     public void SetPaneTransVisible() {
@@ -238,6 +300,16 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(false);
+        PaneInfo.setVisible(false);
+    }
+
+    public void SetPaneInfoVisible() {
+        PaneTrans.setVisible(false);
+        PaneSpeech.setVisible(false);
+        PaneDelete.setVisible(false);
+        PaneAddWord.setVisible(false);
+        PaneHome.setVisible(false);
+        PaneInfo.setVisible(true);
     }
 
     public void SetPaneSpeechVisible() {
@@ -246,6 +318,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(false);
+        PaneInfo.setVisible(false);
     }
 
     @Override
@@ -253,7 +326,7 @@ public class Contronler extends Dictionary implements Initializable {
 
         try {
             DictionaryManagement.InsertFromFile();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         // danh sach tu o ListView
