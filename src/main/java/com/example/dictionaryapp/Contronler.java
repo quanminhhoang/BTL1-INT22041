@@ -1,31 +1,23 @@
 package com.example.dictionaryapp;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Contronler extends Dictionary implements Initializable {
@@ -81,13 +73,21 @@ public class Contronler extends Dictionary implements Initializable {
     }
 
     public void WordToTLAPI() throws IOException {
-        if (ToTrans.getText() == null || ToTrans.getText().isEmpty()) {
+        if (DictionaryManagement.netIsAvailable() || ToTrans.getText() == null || ToTrans.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Nothing in TextField");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
-        } else {
+        }else if (DictionaryManagement.netIsAvailable()==false)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Internet");
+            alert.setContentText("Please check your Internet connection again");
+            alert.showAndWait();
+        }
+        else {
             String WordLook = ToTrans.getText();
             Trans.setText(DictionaryManagement.TranslateEnVi(WordLook));
         }

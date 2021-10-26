@@ -1,23 +1,12 @@
 package com.example.dictionaryapp;
 
 import javax.speech.Central;
-import javax.speech.synthesis.*;
-import java.io.*;
-
-import java.net.*;
-import java.util.*;
-
-import java.lang.reflect.WildcardType;
-import java.util.*;
-import java.util.Locale;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import javax.speech.synthesis.Voice;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 
 public class DictionaryManagement extends Dictionary{
@@ -125,11 +114,51 @@ public class DictionaryManagement extends Dictionary{
         return true;
     }
 
+    public static double similarity(String s1, String s2) {
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2; shorter = s1;
+        }
+        int longerLen = longer.length();
+        if (longerLen == 0) { return 1.0; /* both strings are zero length */ }
+        return (longerLen - editDistance(longer, shorter)) / (double) longerLen;
+
+    }
+
+    // Example implementation of the Levenshtein Edit Distance
+    // See http://rosettacode.org/wiki/Levenshtein_distance#Java
+    public static int editDistance(String s1, String s2) {
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] a = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    a[j] = j;
+                else {
+                    if (j > 0) {
+                        int Value = a[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            Value = Math.min(Math.min(Value, lastValue),
+                                    a[j]) + 1;
+                        a[j - 1] = lastValue;
+                        lastValue = Value;
+                    }
+                }
+            }
+            if (i > 0)
+                a[s2.length()] = lastValue;
+        }
+        return a[s2.length()];
+    }
+
     public static List<String> DictionarySearch(String wordSearch)
     {
 
         for (World world : array) {
-            if (world.getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase())) {
+            if (world.getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase()) || similarity(world.getWorld_target(), wordSearch) > 0.7) {
                 add_up.add(world.getWorld_target());
             }
         }
@@ -182,7 +211,7 @@ public class DictionaryManagement extends Dictionary{
     }
 
 
-    private static boolean netIsAvailable() {
+    public static boolean netIsAvailable() {
         try {
             final URL url = new URL("http://www.google.com");
             final URLConnection conn = url.openConnection();
