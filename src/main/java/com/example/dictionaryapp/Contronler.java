@@ -73,7 +73,7 @@ public class Contronler extends Dictionary implements Initializable {
     }
 
     public void WordToTLAPI() throws IOException {
-        if (DictionaryManagement.netIsAvailable() || ToTrans.getText() == null || ToTrans.getText().isEmpty()) {
+        if (DictionaryManagement.netIsAvailable() && (ToTrans.getText() == null || ToTrans.getText().isEmpty())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Nothing in TextField");
