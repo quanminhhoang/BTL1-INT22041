@@ -88,7 +88,7 @@
                      </graphic>
                       </JFXButton>
                   <Separator prefHeight="2.0" prefWidth="277.0" />
-                  <JFXButton alignment="BASELINE_LEFT" graphicTextGap="12.0" prefHeight="67.0" prefWidth="280.0" style="-fx-background-color: #537895; -fx-background-radius: 10;" text="Info" textFill="#0b3636">
+                  <JFXButton alignment="BASELINE_LEFT" graphicTextGap="12.0" onAction="#SetPaneInfoVisible" prefHeight="67.0" prefWidth="280.0" style="-fx-background-color: #537895; -fx-background-radius: 10;" text="Info" textFill="#0b3636">
                      <font>
                         <Font size="20.0" />
                      </font>

@@ -81,7 +81,7 @@ public class DictionaryManagement extends Dictionary{
     }
 
     // viet lai file khi sua tu
-    public static void EditFile() throws IOException {
+    public static void ExportoFile() throws IOException {
 
         File file = new File("dataos.txt");
         OutputStream outputStream = new FileOutputStream(file);
@@ -111,7 +111,6 @@ public class DictionaryManagement extends Dictionary{
                 Dictionary.modify(i,new World(change_target, change_explain));
             }
         }
-        EditFile();
         return change_explain;
     }
 
@@ -166,9 +165,8 @@ public class DictionaryManagement extends Dictionary{
 
     public static List<String> DictionarySearch(String wordSearch)
     {
-
         for (World world : words) {
-            if (world.getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase())) {
+            if (world.getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase())|| similarity(world.getWorld_target(), wordSearch) > 0.7) {
                 add_up.add(world.getWorld_target());
             }
         }
