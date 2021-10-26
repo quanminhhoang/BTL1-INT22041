@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Contronler extends Dictionary implements Initializable {
@@ -96,13 +94,21 @@ public class Contronler extends Dictionary implements Initializable {
         }
     }
     public void WordToTLAPI() throws IOException {
-        if (ToTrans.getText() == null || ToTrans.getText().isEmpty()) {
+        if (DictionaryManagement.netIsAvailable() && (ToTrans.getText() == null || ToTrans.getText().isEmpty())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Nothing in TextField");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
-        } else {
+        }else if (DictionaryManagement.netIsAvailable()==false)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Internet");
+            alert.setContentText("Please check your Internet connection again");
+            alert.showAndWait();
+        }
+        else {
             String WordLook = ToTrans.getText();
             Trans.setText(DictionaryManagement.Translate(WordLook));
         }
