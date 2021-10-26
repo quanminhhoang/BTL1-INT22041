@@ -177,6 +177,7 @@ public class DictionaryManagement extends Dictionary{
         in.close();
         return response.toString();
     }
+
     private static boolean netIsAvailable() {
         try {
             final URL url = new URL("http://www.google.com");
