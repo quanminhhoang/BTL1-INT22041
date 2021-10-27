@@ -21,30 +21,23 @@ public class DictionaryManagement extends Dictionary{
     public static List<String> AddWord(String word_target, String word_explain) // them tu va tra ve danh sach tu moi
     {
 
-        World newWord = new World(word_target, word_explain);
+        Word newWord = new Word(word_target, word_explain);
         words.add(newWord);
-        for (World world : words) {
-            add_up.add(world.getWorld_target());
+        for (Word word : words) {
+            add_up.add(word.getWordTarget());
 
         }
         return  add_up;
-    }
-
-    public void Change() {
-        String temp;
-        temp = lan1;
-        lan1 = lan2;
-        lan2 = temp;
     }
 
     public static List<String> RemoveWordFromDictionary(String word)
     {
         int i;
         for(i = 0; i < words.size() ; i++) {
-            if(words.get(i).getWorld_target().equals(word)) {
+            if(words.get(i).getWordTarget().equals(word)) {
                 words.remove(words.get(i));
             } else {
-                remove_out.add(words.get(i).getWorld_target());
+                remove_out.add(words.get(i).getWordTarget());
             }
         }
         return remove_out;
@@ -58,7 +51,7 @@ public class DictionaryManagement extends Dictionary{
             String lineWord = br.readLine();
             String[] parts = lineWord.split("\\t");
             if (parts.length == 2) {
-                World word = new World(parts[0], parts[1]);
+                Word word = new Word(parts[0], parts[1]);
                 words.add(word);
                 listWordTarget.add(parts[0]);
             }
@@ -70,10 +63,9 @@ public class DictionaryManagement extends Dictionary{
     // ham tra cuu tu va tra ve nghia
     public static String DictionaryLookup(String wordToLookUp)
     {
-
-        for (World world : words) {
-            if (world.getWorld_target().equalsIgnoreCase(wordToLookUp)) {
-                return world.getWorld_explain();
+        for (Word word : words) {
+            if (word.getWordTarget().equalsIgnoreCase(wordToLookUp)) {
+                return word.getWordExplain();
             }
         }
 
@@ -87,15 +79,15 @@ public class DictionaryManagement extends Dictionary{
         OutputStream outputStream = new FileOutputStream(file);
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
         int i =1;
-        for (World newWord : words)
+        for (Word newWord : words)
         {
             if (i!=1)
             {
                 outputStreamWriter.write("\n");
             }
-            outputStreamWriter.write(newWord.getWorld_target());
+            outputStreamWriter.write(newWord.getWordTarget());
             outputStreamWriter.write("\n");
-            String t = newWord.getWorld_explain().replace("\n", "");
+            String t = newWord.getWordExplain().replace("\n", "");
             outputStreamWriter.write(t);
             i++;
         }
@@ -103,20 +95,20 @@ public class DictionaryManagement extends Dictionary{
     }
 
     //hàm chỉnh sửa nghĩa từ//
-    public static String Modified(String change_target,String change_explain) throws IOException {
+    public static String Modify(String change_target, String change_explain) throws IOException {
         for(int i = 0; i< words.size(); i++)
         {
-            if(words.get(i).getWorld_target().equalsIgnoreCase(change_target))
+            if(words.get(i).getWordTarget().equalsIgnoreCase(change_target))
             {
-                Dictionary.modify(i,new World(change_target, change_explain));
+                Dictionary.modify(i,new Word(change_target, change_explain));
             }
         }
         return change_explain;
     }
 
     public static Boolean WordExist(String Word) {
-        for(World word : words) {
-            if(Objects.equals(word.getWorld_target(), Word)) {
+        for(com.example.dictionaryapp.Word word : words) {
+            if(Objects.equals(word.getWordTarget(), Word)) {
                 return false;
             }
         }
@@ -165,9 +157,9 @@ public class DictionaryManagement extends Dictionary{
 
     public static List<String> DictionarySearch(String wordSearch)
     {
-        for (World world : words) {
-            if (world.getWorld_target().toLowerCase().startsWith(wordSearch.toLowerCase())|| similarity(world.getWorld_target(), wordSearch) > 0.7) {
-                add_up.add(world.getWorld_target());
+        for (Word word : words) {
+            if (word.getWordTarget().toLowerCase().startsWith(wordSearch.toLowerCase())|| similarity(word.getWordTarget(), wordSearch) > 0.7) {
+                add_up.add(word.getWordTarget());
             }
         }
         Collections.sort(add_up);
@@ -200,6 +192,12 @@ public class DictionaryManagement extends Dictionary{
         }
     }
 
+    public void Change() {
+        String temp;
+        temp = lan1;
+        lan1 = lan2;
+        lan2 = temp;
+    }
     // 5000 tu 1 ngay 1 link
     public static String Translate(String text) throws IOException {
         String urlStr = "https://script.google.com/macros/s/AKfycbyXC0J_8nBkbpnAT96Oq_ptutFJHlHvZS_HR5Hy4qSsQvHr5Cw/exec" +

@@ -17,6 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Dictionaryfx.fxml"));
+        root.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("App Dictionary");
         primaryStage.setScene(new Scene(root));

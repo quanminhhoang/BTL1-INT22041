@@ -1,16 +1,11 @@
 package com.example.dictionaryapp;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -18,40 +13,27 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Contronler extends Dictionary implements Initializable {
     @FXML
-    private TextArea textArea;
+    private TextArea ExplainArea;
     @FXML
-    private TextField TextToP;
+    private TextArea EditArea;
+    @FXML
+    private TextField TextToSpeech;
     @FXML
     private TextField add_Target;
     @FXML
     private TextField add_Explain;
     @FXML
-    private TextField searchField;
+    private TextField SearchField;
     @FXML
     private TextField SearchToDelete;
     @FXML
     private TextField ToTrans;
     @FXML
     private TextField Trans;
-    @FXML
-    private Button TLAPI;
-    @FXML
-    private Button TTS;
-    @FXML
-    private Button TTS2;
-    @FXML
-    private Button AddWord;
-    @FXML
-    private Button Home;
-    @FXML
-    private Button ChangeMode;
-    @FXML
-    private Button ToDeletePane;
     @FXML
     private javafx.scene.control.Button closeButton;
     @FXML
@@ -76,24 +58,46 @@ public class Contronler extends Dictionary implements Initializable {
     private ImageView v1;
     @FXML
     private ImageView v2;
+    @FXML
+    private Button ConfirmEdit;
+    @FXML
+    private Button CancelEdit;
 
 
+    /**
+     * Exit the program.
+     */
     @FXML
     private void closeButtonAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
 
-    //ham su dung khi danh mot tu//an enter se hien thang nghia tren textArea
-    public void wordlookup(ActionEvent event) {
-        String wordLook = searchField.getText();
-        String text = DictionaryManagement.DictionaryLookup(wordLook);
-        if (Objects.equals(text, "//404//")) {
-            textArea.setText("Not Found");
+    /**
+     * hien nghia tren textArea.
+     */
+    public void LookupWord() {
+        if (SearchField.getText() == null || SearchField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing in SearchField");
+            alert.setContentText("Please enter words.");
+            alert.showAndWait();
         } else {
-            textArea.setText(text);
+            String WordLook = SearchField.getText();
+            if (DictionaryManagement.WordExist(WordLook)) {
+                String text = DictionaryManagement.DictionaryLookup(WordLook);
+                ExplainArea.setText(text);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Word don't exist");
+                alert.setContentText("Please enter words.");
+                alert.showAndWait();
+            }
         }
     }
+
     public void WordToTLAPI() throws IOException {
         if (DictionaryManagement.netIsAvailable() && (ToTrans.getText() == null || ToTrans.getText().isEmpty())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -101,7 +105,7 @@ public class Contronler extends Dictionary implements Initializable {
             alert.setHeaderText("Nothing in TextField");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
-        }else if (DictionaryManagement.netIsAvailable()==false)
+        }else if (!DictionaryManagement.netIsAvailable())
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -132,93 +136,115 @@ public class Contronler extends Dictionary implements Initializable {
         }
     }
 
+    public void ConfirmEdit1() throws IOException {
+        String Word = SearchField.getText();
+        String Explain = EditArea.getText();
+        String Out = DictionaryManagement.Modify(Word, Explain);
+        ExplainArea.setText(Out);
+        EditArea.setVisible(false);
+        ExplainArea.setVisible(true);
+        ConfirmEdit.setVisible(false);
+        CancelEdit.setVisible(false);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText("Edited with new meaning");
+        alert.showAndWait();
+    }
+    public void CancelEdit1() {
+        EditArea.clear();
+        EditArea.setVisible(false);
+        ExplainArea.setVisible(true);
+        ConfirmEdit.setVisible(false);
+        CancelEdit.setVisible(false);
+    }
+
+    public void EditExplain() {
+        if(SearchField.getText() == null || SearchField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing to edit");
+            alert.setContentText("Please enter words.");
+            alert.showAndWait();
+        } else {
+            String Explain = ExplainArea.getText();
+            ExplainArea.setVisible(false);
+            EditArea.setVisible(true);
+            CancelEdit.setVisible(true);
+            ConfirmEdit.setVisible(true);
+            EditArea.setText(Explain);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Info");
+            alert.setHeaderText("Enter the new meaning in the ExplainArea");
+            alert.showAndWait();
+        }
+    }
+
     public void ToDeletePane() {
-        if (searchField.getText() == null || searchField.getText().isEmpty()) {
+        if (SearchField.getText() == null || SearchField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Nothing in search field to delete");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
         } else {
-            String Word = searchField.getText();
+            ExplainArea.clear();
+            String Word = SearchField.getText();
+            CancelEdit1();
             SetPaneDeleteVisible();
             SearchToDelete.setText(Word);
         }
     }
 
     public void TTS() {
-        if (TextToP.getText().isEmpty() || TextToP.getText() == null) {
+        if (TextToSpeech.getText().isEmpty() || TextToSpeech.getText() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Nothing in TextField");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
         } else {
-            String wordLook = TextToP.getText();
+            String wordLook = TextToSpeech.getText();
             DictionaryManagement.TTS(wordLook);
-            TextToP.clear();
         }
     }
     public void TTS2() {
-        if (searchField.getText().isEmpty() || searchField.getText() == null) {
+        if (SearchField.getText().isEmpty() || SearchField.getText() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Nothing in TextField");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
         } else {
-            String wordLook = searchField.getText();
+            String wordLook = SearchField.getText();
             DictionaryManagement.TTS(wordLook);
-            searchField.clear();
         }
     }
 
-    public void inputsearch(KeyEvent event) {
-        String se = searchField.getText();
-        List<String> list = DictionaryManagement.DictionarySearch(se);
-        Collections.sort(list);
-        ObservableList<String> input = FXCollections.observableArrayList(list);
-        listView.setItems(input);
-        DictionaryManagement.add_up.clear();
 
+    public void InputSearch() {
+            String text = SearchField.getText();
+            List<String> list = DictionaryManagement.DictionarySearch(text);
+            Collections.sort(list);
+            ObservableList<String> input = FXCollections.observableArrayList(list);
+            listView.setItems(input);
+            DictionaryManagement.add_up.clear();
     }
 
     // ham kich chuot vao tu trong textArea va cho ra nghia
-    public void clicked(MouseEvent event) {
+    public void ClickToExplain() {
         try {
-            searchField.setText(listView.getSelectionModel().getSelectedItem().toString());
-            textArea.setText(DictionaryManagement.DictionaryLookup(listView.getSelectionModel().getSelectedItem().toString()));
+            SearchField.setText(listView.getSelectionModel().getSelectedItem().toString());
+            ExplainArea.setText(DictionaryManagement.DictionaryLookup(listView.getSelectionModel().getSelectedItem().toString()));
         } catch (NullPointerException e1) {
-            System.out.println("There is nothing");
+            e1.printStackTrace();
         }
     }
-
-    public void mode_word(KeyEvent event) throws IOException {
-        textArea.setEditable(true);
-        if (event.getCode() == KeyCode.ENTER) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Do you want to change the word ");
-            alert.showAndWait();
-            String Explain = textArea.getText();
-            String Word = searchField.getText();
-            String Out = DictionaryManagement.Modified(Word, Explain);
-            textArea.setText(Out);
-            textArea.setEditable(false);
-        }
-    }
-
 
     // xoa tu cua textFied
-    public void erase_search(ActionEvent event) {
-        searchField.setText("");
-        textArea.setText("");
-    }
-
-    // tat chuong trinh
-    public void close(ActionEvent event) {
-        Platform.exit();
-        System.exit(0);
+    public void EraseSearch() {
+        SearchField.setText("");
+        ExplainArea.setText("");
     }
 
     public void AddWord(){
@@ -284,6 +310,7 @@ public class Contronler extends Dictionary implements Initializable {
     }
 
     public void SetPaneHomeVisible() {
+        CancelEdit1();
         PaneTrans.setVisible(false);
         PaneSpeech.setVisible(false);
         PaneDelete.setVisible(false);
