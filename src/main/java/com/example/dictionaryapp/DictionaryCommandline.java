@@ -1,6 +1,7 @@
 package com.example.dictionaryapp;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,7 @@ public class DictionaryCommandline extends DictionaryManagement {
     public static void showAllWords() {
         System.out.printf("%-11s%-22s%-22s\n", "No", "Word", "Explain");
         int num = 1;
-        for (World word : array) {
+        for (Word word : words) {
             System.out.printf("%-11d%-22s%-22s\n", num, word.getWorld_target(), word.getWorld_explain());
             num++;
         }
@@ -19,19 +20,19 @@ public class DictionaryCommandline extends DictionaryManagement {
 
     public static void Basic() {
         Scanner scanner = new Scanner(System.in);
-        String Word;
+        int next;
         while (true) {
-            System.out.println("Nhập ShowAllWord() để hiện thị tất cả từ.");
-            System.out.println("Nhập InsertFromCmd() để nhập liệu.");
-            System.out.println("Nhập Back() để quay lại.");
-            Word = scanner.next();
-            if (Objects.equals(Word, "ShowAllWord()")) {
+            System.out.println("Nhập 1 để hiện thị tất cả từ ShowAllWord().");
+            System.out.println("Nhập 2 để nhập liệu InsertFromCmd().");
+            System.out.println("Nhập 3 để quay lại.");
+            next = scanner.nextInt();
+            if (next == 1) {
                 System.out.println("Bạn đã chọn hiện thị tất cả từ.");
                 showAllWords();
-            } else if (Objects.equals(Word, "InsertFromCmd()")) {
+            } else if (next == 2) {
                 System.out.println("Bạn đã chọn nhập dữ liệu.");
-                insertFromCMD();
-            } else if (Objects.equals(Word, "Back()")) {
+                InsertFromCMD();
+            } else if (next == 3) {
                 System.out.println("Bạn đã chọn quay lại.");
                 break;
             } else {
@@ -40,31 +41,31 @@ public class DictionaryCommandline extends DictionaryManagement {
         }
     }
 
-    public static void Advanced() {
+    public static void Advanced() throws IOException {
         Scanner scanner = new Scanner(System.in);
-        String Word;
+        int next;
         while (true) {
-            System.out.println("Nhập ShowAllWord() để hiện thị tất cả từ.");
-            System.out.println("Nhập InsertFromFile() để nhận dữ liệu từ file.");
-            System.out.println("Nhập LookUp() để tra cứu từ.");
-            System.out.println("Nhập Back() để quay lại.");
-            Word = scanner.next();
-            if (Objects.equals(Word, "ShowAllWord()")) {
+            System.out.println("Nhập 1 để hiện thị tất cả từ ShowAllWord().");
+            System.out.println("Nhập 2 để nhận dữ liệu từ file InsertFromFile().");
+            System.out.println("Nhập 3 để tra cứu từ.");
+            System.out.println("Nhập 4 để quay lại.");
+            next = scanner.nextInt();
+            if (next == 1) {
                 System.out.println("Bạn đã chọn hiện thị tất cả từ.");
                 showAllWords();
-            } else if (Objects.equals(Word, "InsertFromFile()")) {
+            } else if (next == 2) {
                 System.out.println("Bạm đã nhận dữ liệu từ file.");
                 try {
                     InsertFromFile();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            } else if (Objects.equals(Word, "LookUp()")) {
+            } else if (next == 3) {
                 System.out.println("Bạm đã chọn LookUp().");
                 System.out.println("Nhập từ để tra cứu:");
-                String Wordtolook = scanner.next();
-                System.out.println("Nghĩa của " + Wordtolook + " là: " + dictionaryLookup(Wordtolook) +'.');
-            } else if (Objects.equals(Word, "Back()")) {
+                String Word = scanner.next();
+                System.out.println("Nghĩa của " + Word + " là: " + DictionaryLookup(Word) +'.');
+            } else if (next == 4) {
                 System.out.println("Bạn đã chọn quay lại.");
                 break;
             } else {
@@ -77,9 +78,9 @@ public class DictionaryCommandline extends DictionaryManagement {
         Scanner x = new Scanner(System.in);
         String e = x.next();
         x.close();
-        for (World world : array) {
-            if (world.getWorld_target().toLowerCase().startsWith(e.toLowerCase())) {
-                add_up.add(world.getWorld_target());
+        for (Word word : words) {
+            if (word.getWorld_target().toLowerCase().startsWith(e.toLowerCase())) {
+                add_up.add(word.getWorld_target());
             }
         }
         Collections.sort(add_up);
