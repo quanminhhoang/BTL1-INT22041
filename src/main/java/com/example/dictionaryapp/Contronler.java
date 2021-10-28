@@ -5,10 +5,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -47,7 +49,7 @@ public class Contronler extends Dictionary implements Initializable {
     @FXML
     private Pane PaneTrans;
     @FXML
-    private Pane PaneInfo;
+    private Pane Pane;
     @FXML
     public ListView listView;
     @FXML
@@ -58,6 +60,8 @@ public class Contronler extends Dictionary implements Initializable {
     private ImageView v1;
     @FXML
     private ImageView v2;
+    @FXML
+    private ImageView catto;
     @FXML
     private Button ConfirmEdit;
     @FXML
@@ -306,7 +310,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneHome.setVisible(false);
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(true);
-        PaneInfo.setVisible(false);
+        Pane.setVisible(false);
     }
 
     public void SetPaneHomeVisible() {
@@ -316,7 +320,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(true);
-        PaneInfo.setVisible(false);
+        Pane.setVisible(false);
     }
 
     public void SetPaneDeleteVisible() {
@@ -325,7 +329,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(true);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(false);
-        PaneInfo.setVisible(false);
+        Pane.setVisible(false);
     }
 
     public void SetPaneTransVisible() {
@@ -334,7 +338,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(false);
-        PaneInfo.setVisible(false);
+        Pane.setVisible(false);
     }
 
     public void SetPaneInfoVisible() {
@@ -343,7 +347,7 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(false);
-        PaneInfo.setVisible(true);
+        Pane.setVisible(true);
     }
 
     public void SetPaneSpeechVisible() {
@@ -352,12 +356,11 @@ public class Contronler extends Dictionary implements Initializable {
         PaneDelete.setVisible(false);
         PaneAddWord.setVisible(false);
         PaneHome.setVisible(false);
-        PaneInfo.setVisible(false);
+        Pane.setVisible(false);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         try {
             DictionaryManagement.InsertFromFile();
         } catch (IOException e) {
