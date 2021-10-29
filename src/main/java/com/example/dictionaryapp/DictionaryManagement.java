@@ -202,7 +202,7 @@ public class DictionaryManagement extends Dictionary{
     public static String Translate(String text) throws IOException {
         String urlStr = "https://script.google.com/macros/s/AKfycbyXC0J_8nBkbpnAT96Oq_ptutFJHlHvZS_HR5Hy4qSsQvHr5Cw/exec" +
                 "?q=" + URLEncoder.encode(text, "UTF-8") +
-                "&target=" + lan1 + "&source=" + lan2;
+                "&target=" + lan2 + "&source=" + lan1;
         URL url = new URL(urlStr);
         StringBuilder response = new StringBuilder();
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
