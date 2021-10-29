@@ -87,6 +87,12 @@ public class Contronler extends Dictionary implements Initializable {
             alert.setHeaderText("Nothing in SearchField");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
+        } else if (!(DictionaryManagement.WordExist(SearchField.getText()))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Word don't exist");
+            alert.setContentText("Please enter words.");
+            alert.showAndWait();
         } else {
             String WordLook = SearchField.getText();
             if (DictionaryManagement.WordExist(WordLook)) {
@@ -188,7 +194,7 @@ public class Contronler extends Dictionary implements Initializable {
         if (SearchField.getText() == null || SearchField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Nothing in search field to delete");
+            alert.setHeaderText("Nothing in SearchField to delete");
             alert.setContentText("Please enter words.");
             alert.showAndWait();
         } else {
@@ -258,6 +264,12 @@ public class Contronler extends Dictionary implements Initializable {
             alert.setHeaderText("You have not entered the word");
             alert.setContentText("Please add word");
             alert.showAndWait();
+        } else if (DictionaryManagement.WordExist(add_Target.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Word existed");
+            alert.setContentText("Please enter another word");
+            alert.showAndWait();
         } else {
             String target = add_Target.getText();
             String explain = add_Explain.getText();
@@ -282,13 +294,6 @@ public class Contronler extends Dictionary implements Initializable {
             alert.setContentText("Please add word");
             alert.showAndWait();
         } else if (DictionaryManagement.WordExist(SearchToDelete.getText())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Word don't exist");
-            alert.setContentText("Please try again");
-            alert.showAndWait();
-        } else {
-            //Chua viet xong ham Dictionarymanegement.Remove..
             String Word = SearchToDelete.getText();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Delete");
@@ -299,7 +304,12 @@ public class Contronler extends Dictionary implements Initializable {
             listView.setItems(input);
             s.clear();
             SearchToDelete.clear();
-
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Word don't exist");
+            alert.setContentText("Please try again");
+            alert.showAndWait();
         }
 
     }

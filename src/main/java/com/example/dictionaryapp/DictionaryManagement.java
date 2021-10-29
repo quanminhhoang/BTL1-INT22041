@@ -63,13 +63,13 @@ public class DictionaryManagement extends Dictionary{
     // ham tra cuu tu va tra ve nghia
     public static String DictionaryLookup(String wordToLookUp)
     {
-        for (Word word : words) {
-            if (word.getWordTarget().equalsIgnoreCase(wordToLookUp)) {
-                return word.getWordExplain();
+            for (Word word : words) {
+                if (word.getWordTarget().equalsIgnoreCase(wordToLookUp)) {
+                    return word.getWordExplain();
+                }
             }
-        }
 
-        return "//404//";
+        return "";
     }
 
     // viet lai file khi sua tu
@@ -107,12 +107,12 @@ public class DictionaryManagement extends Dictionary{
     }
 
     public static Boolean WordExist(String Word) {
-        for(com.example.dictionaryapp.Word word : words) {
-            if(Objects.equals(word.getWordTarget(), Word)) {
-                return false;
+        for(Word word : words) {
+            if(word.getWordTarget().equalsIgnoreCase(Word)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public static double similarity(String s1, String s2) {
@@ -230,8 +230,6 @@ public class DictionaryManagement extends Dictionary{
             return false;
         }
     }
-    public static void main(String[] args) {
-    }
 
-
+    
 }

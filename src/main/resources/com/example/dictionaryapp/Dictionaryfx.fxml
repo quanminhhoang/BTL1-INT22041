@@ -260,7 +260,7 @@
                   <Image url="@catto2.gif" />
                </image>
             </ImageView>
-            <Text layoutX="260.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nothing here come back" textAlignment="CENTER" wrappingWidth="408.0">
+            <Text layoutX="260.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nothing here go back" textAlignment="CENTER" wrappingWidth="408.0">
                <font>
                   <Font size="25.0" />
                </font>
